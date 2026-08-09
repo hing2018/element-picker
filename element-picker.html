@@ -64,13 +64,15 @@
     color: #0a0e14;
     border: none;
     border-radius: 999px;
-    padding: 14px 40px;
-    font-size: 18px;
+    padding: 22px 64px;
+    font-size: 26px;
     font-weight: 700;
-    letter-spacing: 6px;
+    letter-spacing: 8px;
     cursor: pointer;
+    width: 100%;
+    margin-top: 24px;
     transition: transform 0.12s ease, box-shadow 0.12s ease;
-    box-shadow: 0 0 22px rgba(79, 209, 255, 0.25);
+    box-shadow: 0 0 26px rgba(79, 209, 255, 0.3);
   }
   #drawBtn:hover { transform: translateY(-2px); box-shadow: 0 0 34px rgba(79, 209, 255, 0.4); }
   #drawBtn:active { transform: translateY(0); }
@@ -190,10 +192,10 @@
 
   <div class="panel draw-area">
     <div id="notice"></div>
-    <button id="drawBtn">抽　取</button>
     <div class="result" id="result">
       <div class="result-empty">按下抽取，隨機獲得三個元素</div>
     </div>
+    <button id="drawBtn">抽　取</button>
   </div>
 
   <div class="panel list-panel">
