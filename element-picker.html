@@ -86,12 +86,28 @@
   }
   .result-row {
     display: flex;
-    align-items: center;
-    gap: 12px;
+    flex-direction: column;
+    gap: 8px;
     padding: 14px 18px;
     border-radius: 10px;
     border: 1px solid var(--border);
     background: rgba(10, 14, 20, 0.5);
+  }
+  .row-top {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+  }
+  .tag-desc {
+    color: var(--muted);
+    font-size: 12px;
+    line-height: 1.7;
+    letter-spacing: 1px;
+    padding-left: 68px;
+  }
+  .tag-desc .avoid {
+    color: #8f9db3;
+    font-style: italic;
   }
   .role {
     flex: 0 0 56px;
@@ -226,6 +242,22 @@
     '神聖', '抽象', '飛天麵條教', '動物', '人體', '宇宙'
   ];
 
+  var TAG_DESCRIPTIONS = {
+    '克蘇魯': { desc: '觸手、非歐幾里得形體、不可名狀的存在感；裝甲扭曲生長、不符合結構常理。', avoid: '章魚、克蘇魯（直接用神名）' },
+    '宗教': { desc: '祭儀、聖物、教條符號化裝甲；幾何圖騰與儀式性配置，肅穆而不失機能。', avoid: '佛教、神道教（特定教別）' },
+    '迷信': { desc: '護符、禁忌、避凶圖騰；繩結、符籙、咒文刻印，規避不祥的設計語言。', avoid: '詛咒（負面語感）' },
+    '科技': { desc: '高密度機構、量子紋理、精密結構；奈米級細節與儀表感，理性而冷冽。', avoid: '未來風、賽博龐克' },
+    '矽基': { desc: '矽晶結晶、液態金屬、自組織幾何；以矽機生命本質為底，結晶面與流體曲面共存。', avoid: '玻璃、塑膠' },
+    '大自然': { desc: '有機曲線、植石共生、生態偽裝；與星球生態相融，生長與環境一體。', avoid: '植物、樹木' },
+    '機械': { desc: '齒輪、關節、外露機能；真實金屬機構感，關節運作可見，無多餘裝飾。', avoid: '機器人、鋼彈' },
+    '神聖': { desc: '光暈、圓環、肅穆對稱；幾何完美與光輝，超越塵世的存在感。', avoid: '天使、上帝' },
+    '抽象': { desc: '純幾何、無重力懸浮、色塊構成；不指向具體物象，以構成感取勝。', avoid: '概念藝術' },
+    '飛天麵條教': { desc: '麵條觸鬚、肉丸、荒誕喜感；設計上限的「安全閥」，讓世界觀偶爾保有幽默。', avoid: '宗教褻瀆、諷刺' },
+    '動物': { desc: '地球生物原型、擬態；以地球動物為模板塑形，行動姿態與習性可辨識。', avoid: '怪獸、寵物' },
+    '人體': { desc: '人形輪廓、義體結構；類人比例與機械義肢結合，接近人的存在感。', avoid: '人類、人造人' },
+    '宇宙': { desc: '天體紋理、星雲光紋、深空感；星塵質感與星系花紋，承載星空的意象。', avoid: '太空站、火箭' }
+  };
+
   var el = {
     notice: document.getElementById('notice'),
     drawBtn: document.getElementById('drawBtn'),
@@ -279,12 +311,26 @@
       picks.push(pool.splice(i, 1)[0]);
     }
     el.result.innerHTML =
-      '<div class="result-row"><span class="role primary">主標籤</span>' +
-      '<span class="tag primary">' + escapeHtml(picks[0]) + '</span></div>' +
-      '<div class="result-row"><span class="role">副標籤</span>' +
-      '<span class="tag secondary">' + escapeHtml(picks[1]) + '</span></div>' +
-      '<div class="result-row"><span class="role">副標籤</span>' +
-      '<span class="tag secondary">' + escapeHtml(picks[2]) + '</span></div>';
+      '<div class="result-row">' + rowHtml('主標籤', picks[0], true) + '</div>' +
+      '<div class="result-row">' + rowHtml('副標籤', picks[1], false) + '</div>' +
+      '<div class="result-row">' + rowHtml('副標籤', picks[2], false) + '</div>';
+  }
+
+  function rowHtml(role, tag, isPrimary) {
+    var cls = isPrimary ? 'primary' : 'secondary';
+    var desc = descHtml(tag);
+    return '<div class="row-top"><span class="role ' + cls + '">' + role + '</span>' +
+      '<span class="tag ' + cls + '">' + escapeHtml(tag) + '</span></div>' + desc;
+  }
+
+  function descHtml(tag) {
+    var d = TAG_DESCRIPTIONS[tag];
+    if (!d) return '';
+    var html = escapeHtml(d.desc);
+    if (d.avoid) {
+      html += '<br><span class="avoid">_Avoid_: ' + escapeHtml(d.avoid) + '</span>';
+    }
+    return '<div class="tag-desc">' + html + '</div>';
   }
 
   function escapeHtml(s) {
